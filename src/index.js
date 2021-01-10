@@ -1,22 +1,17 @@
 const express = require("express");
 require("./db/mongoose");
-const User = require("./models/user.js");
+const taskRouter = require("./routers/taskRouter");
+const userRouter = require("./routers/userRouter");
+
+const Task = require("./models/task");
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
-app.post("/users", async (req, res) => {
-  try {
-    const user = await new User(req.body);
-    user.save();
-    res.send(user);
-  } catch {
-    res.send("testing");
-    console.error(" Error in file");
-  }
-});
+app.use(taskRouter);
+app.use(userRouter);
 
 app.listen(port, () => {
-  console.log("Server running at port" + port);
+  console.log("Server is up on port " + port);
 });
